@@ -3,6 +3,7 @@
 
 #include "ui.h"
 #include <bits/stdc++.h>
+#include <cstdio>
 // #include <vector>
 
 using namespace std;
@@ -25,6 +26,25 @@ private:
 
 private:
     float pitagoras(float x1, float y1, float x2, float y2);
+    void resizeVector2d(vector<vector<float>> vector, unsigned int size);
+    void printPath(vector<int> path_temp, int dst);
+    void dijkstra(int graph[100][100], int src, int dst);
+    int cariJarakTerkecilDijkstra(vector<int> jarak_antar_node, vector<bool> sudah_dilewati, unsigned int src);
+    bool cekHubungan(int src_pos, int dst_pos);
+
+private:
+    vector<int> jarak_antar_node;
+    vector<bool> sudah_dilewati;
+    vector<int> path_temp;
+    int graph[9][9] = {{0, 4, 0, 0, 0, 0, 0, 8, 0},
+                       {4, 0, 8, 0, 0, 0, 0, 11, 0},
+                       {0, 8, 0, 7, 0, 4, 0, 0, 2},
+                       {0, 0, 7, 0, 9, 14, 0, 0, 0},
+                       {0, 0, 0, 9, 0, 10, 0, 0, 0},
+                       {0, 0, 4, 0, 10, 0, 2, 0, 0},
+                       {0, 0, 0, 14, 0, 2, 0, 1, 6},
+                       {8, 11, 0, 0, 0, 0, 1, 0, 7},
+                       {0, 0, 2, 0, 0, 0, 6, 7, 0}};
 
 public:
     UI *interface = UI::getInstance();
@@ -38,7 +58,8 @@ public:
     void connect1arah(string src, string dst);
     void connect2arah(string src, string dst);
     void simpanDataJarak(int pos);
-    void dijkstra();
+    void initDijkstra();
+    void cariRute(string asal, string tujuan);
 };
 
 #endif

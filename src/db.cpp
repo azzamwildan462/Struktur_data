@@ -76,7 +76,7 @@ void DB::show()
     // isi
     for (int i = 0; i < banyak_kota; i++)
     {
-        // printf("iter-%d\t", i); // untuk debug index
+        printf("iter-%d\t", i); // untuk debug index
         if (kota[i].nama.size() < 0x8)
             cout << kota[i].nama << "\t\t";
         else if (kota[i].nama.size() >= 0x8)
@@ -98,19 +98,26 @@ void DB::show()
         {
             for (int v = 0; v < kota[i].tanda_akhir_hubungan_kota; v++) // print hubungan
             {
-                cout << kota[kota[i].hubungan_kota[v]].nama << ", ";
-                // cout << kota[i].hubungan_kota[v] << ", ";
+                // cout << kota[kota[i].hubungan_kota[v]].nama << ", ";
+                cout << kota[i].hubungan_kota[v] << ", ";
             }
-            cout << kota[kota[i].hubungan_kota[kota[i].tanda_akhir_hubungan_kota]].nama << " ";
-            // cout << kota[i].hubungan_kota[kota[i].tanda_akhir_hubungan_kota] << " ";
+            // cout << kota[kota[i].hubungan_kota[kota[i].tanda_akhir_hubungan_kota]].nama << " ";
+            cout << kota[i].hubungan_kota[kota[i].tanda_akhir_hubungan_kota] << " ";
         }
         cout << endl;
     }
 }
 
+void DB::resizeVector2d(vector<vector<float>> vector, unsigned int size)
+{
+    printf("size %d", size);
+    vector.resize(size);
+    for (int i = 0; i < size; ++i)
+        vector[i].resize(size);
+}
+
 float DB::pitagoras(float x1, float y1, float x2, float y2)
 {
-
     return sqrt(((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1)));
 }
 
@@ -135,7 +142,7 @@ int DB::searchByName(string nama_kota)
 int DB::cariKotaTerdekat(string kota_yang_ingin_dicari)
 {
     int pos = searchByName(kota_yang_ingin_dicari);
-    float min = 9999999999;
+    float min = INT_MAX;
     int min_pos = pos;
     for (int i = 0; i < banyak_kota; i++)
     {
@@ -185,22 +192,29 @@ void DB::connect2arah(string src, string dst)
 
 void DB::simpanDataJarak(int pos)
 {
+    // resizeVector2d(data_jarak_kota, banyak_kota);
+    // data_jarak_kota[pos].push_back(100);
+    // matrix.resize(COL, vector<char>(ROW));
+    // data_jarak_kota.resize(9, vector<float>(9));
+    // data_jarak_kota[1][1] = 69;
     for (int i = 0; i < banyak_kota; i++)
     {
         // data_jarak_kota.resize()
-        data_jarak_kota[i][pos] = pitagoras(kota[pos].x, kota[pos].y, kota[i].x, kota[i].y);
+        // data_jarak_kota[pos].push_back(pitagoras(kota[pos].x, kota[pos].y, kota[i].x, kota[i].y));
+        // cekHubungan(pos, i);
+        // printf("%d neng %d = %d\n", pos, i, cekHubungan(pos, i));
+        if (cekHubungan(pos, i))
+        {
+            // printf("onok\n");
+            data_jarak_kota[i][pos] = pitagoras(kota[pos].x, kota[pos].y, kota[i].x, kota[i].y);
+        }
+        else
+        {
+            // printf("gak onok\n");
+            data_jarak_kota[i][pos] = 0;
+        }
     }
-}
-
-void DB::dijkstra()
-{
-    // nggawe data jarak sek
-    for (int i = 0; i < banyak_kota; i++)
-    {
-        simpanDataJarak(i);
-    }
-
-    // for (int i = 0; i < banyak_kota; i++) //testing
+    // for (int i = 0; i < banyak_kota; i++)
     // {
     //     for (int j = 0; j < banyak_kota; j++)
     //     {
@@ -208,4 +222,183 @@ void DB::dijkstra()
     //     }
     //     printf("\n");
     // }
+}
+
+void DB::initDijkstra()
+{
+    // nggawe data jarak sek
+    data_jarak_kota.resize(banyak_kota, vector<float>(banyak_kota));
+    for (int i = 0; i < banyak_kota; i++)
+    {
+        simpanDataJarak(i);
+    }
+    sudah_dilewati.resize(banyak_kota);
+    path_temp.resize(banyak_kota);
+    jarak_antar_node.resize(banyak_kota);
+    // sudah_dilewati.
+
+    for (int i = 0; i < banyak_kota; i++)
+    {
+        // path_temp[src] = -1;
+        jarak_antar_node[i] = INT_MAX;
+        sudah_dilewati[i] = 0;
+    }
+    // for (int i = 0; i < banyak_kota; i++)
+    // {
+    //     // path_temp[src] = -1;
+    //     // jarak_antar_node[i] = INT_MAX;
+    //     // sudah_dilewati[i] = false;
+    //     sudah_dilewati.at(i) = 0;
+    //     printf("jarak %f dan lewat %d\n", jarak_antar_node[i], sudah_dilewati[i]);
+    // }
+}
+void DB::cariRute(string asal, string tujuan)
+{
+    int src = searchByName(asal);
+    int dst = searchByName(tujuan);
+    int src_temp_temp = src;
+    initDijkstra();
+    jarak_antar_node[src] = 0;
+    path_temp[src] = -1;
+    // printf("ASAL %d TUJUAN %d\n", src, dst);
+    // sudah_dilewati[src] = 1;
+
+    // for (int i = 0; i < banyak_kota; i++)
+    // {
+    //     // path_temp[src] = -1;
+    //     jarak_antar_node[i] = INT_MAX;
+    //     sudah_dilewati[i] = false;
+    //     printf("jarak %f dan lewat %d\n", jarak_antar_node[i], sudah_dilewati[i]);
+    // }
+    // return;
+
+    for (int i = 0; i < banyak_kota - 1; i++)
+    {
+        int src_temp = cariJarakTerkecilDijkstra(jarak_antar_node, sudah_dilewati, src_temp_temp);
+        if (src_temp == -1)
+        {
+            printf("Tidak ditemukan jalan kesana\n");
+            return;
+        }
+        src_temp_temp = src_temp;
+        sudah_dilewati[src_temp] = 1;
+        for (int dst_temp = 0; dst_temp < banyak_kota; dst_temp++)
+        {
+            // printf("%d dan %d ->  %.02f dan %.02f \n", src_temp, dst_temp, jarak_antar_node[src_temp] + data_jarak_kota[src_temp][dst_temp], jarak_antar_node[dst_temp]);
+            // printf("%d dan %d, status dst %d, jarak %.02f\n", src_temp, dst_temp, sudah_dilewati[dst_temp], data_jarak_kota[src_temp][dst_temp]);
+            if (sudah_dilewati[dst_temp] == 0 && data_jarak_kota[src_temp][dst_temp] > 0 && jarak_antar_node[src_temp] + data_jarak_kota[src_temp][dst_temp] < jarak_antar_node[dst_temp])
+            {
+                // printf("seng masok: %d dan %d ->  %d dan %d \n", src_temp, dst_temp, jarak_antar_node[src_temp], jarak_antar_node[dst_temp]);
+                path_temp[dst_temp] = src_temp;
+                jarak_antar_node[dst_temp] = jarak_antar_node[src_temp] + data_jarak_kota[src_temp][dst_temp];
+                // printf("sak marine diproses %d\n", jarak_antar_node[dst_temp]);
+            }
+            else
+            {
+                // printf("gk enek seng melbu\n");
+            }
+            // printf("muter gak? \n");
+        }
+        // printf("jarak: %.02f \t", jarak_antar_node[4]);
+
+        if (src_temp == dst)
+        {
+            break;
+        }
+        // saiki print solution
+        // printf("wahdkawgkycdavwyyvkgawc\n");
+    }
+
+    // for (int i = 0; i < banyak_kota; i++)
+    // {
+    //     for (int j = 0; j < banyak_kota; j++)
+    //     {
+    //         printf("%.02f ", data_jarak_kota[i][j]);
+    //     }
+    //     printf("\n");
+    // }
+
+    printf("\n");
+    // printf("iki seng dst path temp %d, dst %d\n", path_temp[dst], dst);
+    // for (size_t i = 0; i < banyak_kota; i++)
+    // {
+    //     printf("path temp %d, dst %d\n", path_temp[i], i);
+    // }
+    printf("jarak: %d \t", jarak_antar_node[dst]);
+    if (jarak_antar_node[dst] >= INT_MAX)
+    {
+        printf("Kadoan\n");
+        return;
+    }
+    else
+    {
+        printPath(path_temp, dst);
+    }
+    printf("\n");
+}
+
+int DB::cariJarakTerkecilDijkstra(vector<int> jarak_antar_node, vector<bool> sudah_dilewati, unsigned int src)
+{
+    int min = INT_MAX;
+    int min_index = -1;
+
+    for (int v = 0; v < banyak_kota; v++)
+    {
+        // printf("lawdhgwuvgadwygv %d\n", sudah_dilewati[v]);
+        // printf("src temp temp %d  dan v nya %d   jarak antar node %.02f    lewat %d\n", src, v, jarak_antar_node[v], sudah_dilewati[v]);
+        if (sudah_dilewati[v] == 0 && jarak_antar_node[v] <= min)
+        {
+            // printf("seng masok src temp temp %d  dan v nya %.02f   jarak antar node %.02f    lewat %d\n", src, v, jarak_antar_node[v], sudah_dilewati[v]);
+            min = jarak_antar_node[v];
+            min_index = v;
+        }
+        // if (!sudah_dilewati[v] && jarak_antar_node[v] <= min && cekHubungan(src, v))
+        // {
+        //     min = jarak_antar_node[v];
+        //     min_index = v;
+        // }
+        // else if (!sudah_dilewati[v] && jarak_antar_node[v] <= min && v == src)
+        // {
+        //     min = jarak_antar_node[v];
+        //     min_index = v;
+        // }
+    }
+    // printf("mari = %d\n", min_index);
+    return min_index;
+}
+
+void DB::printPath(vector<int> path_temp, int dst)
+{
+    static unsigned int iter = 0;
+    // printf("iter = %d\n", iter);
+    // printf("path temp %d, dst %d\n", path_temp[dst], dst);
+    if (iter > banyak_kota)
+    {
+        printf("Dianggep tidak ada hubungan\n");
+        return;
+    }
+    if (path_temp[dst] == -1) // berhenti saat sampai ke src
+        return;
+    iter++;
+    printPath(path_temp, path_temp[dst]);
+    printf("%d ", dst);
+}
+
+bool DB::cekHubungan(int src_pos, int dst_pos)
+{
+    // bool hubungan = 0;
+    for (int i = 0; i <= kota[src_pos].tanda_akhir_hubungan_kota; i++)
+    {
+        // cout << kota[src_pos].hubungan_kota[i] << ", ";
+        // printf("%d dan %d\n", kota[src_pos].hubungan_kota[i], dst_pos);
+        if (kota[src_pos].hubungan_kota[i] == dst_pos)
+        {
+            // printf("seng masok -> %d dan %d\n", kota[src_pos].hubungan_kota[i], dst_pos);
+            return 1;
+        }
+    }
+    // printf("akhir cek hubungan\n");
+    // printf("\n");
+
+    return 0;
 }
