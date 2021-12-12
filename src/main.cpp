@@ -1,8 +1,15 @@
 #include "../include/main_lib.h"
 
+// void eksekusi()
+// {
+// }
+
 int main()
 {
+    // printf("%d.%d.%d\n", SFML_VERSION_MAJOR, SFML_VERSION_MINOR, SFML_VERSION_PATCH);
+    // return;
     DB DbKota;
+    Executor eksekutor(&DbKota);
     DbKota.append("Pasuruan", 0, 0);
     DbKota.append("Sidoarjo", 0, 100);
     DbKota.append("Probolinggo", 1, 0);
@@ -22,26 +29,32 @@ int main()
     // DbKota.append("Malang", 0, -150);
     // DbKota.append("Blitar", -150, -150);
 
-    DbKota.connect2arah("Pasuruan", "Probolinggo");
-    DbKota.connect2arah("Probolinggo", "Lumajang");
-    // DbKota.connect2arah("Pasuruan", "Sidoarjo");
-    // DbKota.connect2arah("Lumajang", "Malang");
-    DbKota.connect2arah("Malang", "Pasuruan");
-    // DbKota.connect2arah("Mojokerto", "Jombang");
-    DbKota.connect2arah("Jember", "Lumajang");
-    DbKota.connect2arah("Malang", "Mojokerto");
-    // DbKota.connect2arah("Mojokerto", "Blitar");
-    DbKota.connect2arah("Blitar", "Jember");
+    DbKota.connect1arah("Pasuruan", "Probolinggo");
+    DbKota.connect1arah("Probolinggo", "Lumajang");
+    // DbKota.connect1arah("Pasuruan", "Sidoarjo");
+    // DbKota.connect1arah("Lumajang", "Malang");
+    DbKota.connect1arah("Malang", "Pasuruan");
+    // DbKota.connect1arah("Mojokerto", "Jombang");
+    DbKota.connect1arah("Jember", "Lumajang");
+    DbKota.connect1arah("Malang", "Mojokerto");
+    // DbKota.connect1arah("Mojokerto", "Blitar");
+    DbKota.connect1arah("Blitar", "Jember");
 
     // DbKota.initDijkstra();
-    DbKota.cariRute("Malang", "Blitar");
+    // DbKota.cariRute("Malang", "Blitar");
 
-    DbKota.show();
+    // DbKota.show();
     // // interface->getInput();
     // interface->tes_var = 666;
     // printf("%d\n", interface->tes_var);
     // // DbKota.nyobakModular();
     // printf("%d\n", interface->tes_var);
+
+    while (1)
+    {
+        interface->getInput();
+        eksekutor.eksekusi();
+    }
 
     return 0;
 }

@@ -31,7 +31,7 @@ void DB::append(string nama_kota, int x, int y)
 }
 void DB::nyobakModular()
 {
-    interface->tes_var = 123;
+    // interface->tes_var = 123;
 }
 
 void DB::show()
@@ -76,7 +76,7 @@ void DB::show()
     // isi
     for (int i = 0; i < banyak_kota; i++)
     {
-        printf("iter-%d\t", i); // untuk debug index
+        // printf("iter-%d\t", i); // untuk debug index
         if (kota[i].nama.size() < 0x8)
             cout << kota[i].nama << "\t\t";
         else if (kota[i].nama.size() >= 0x8)
@@ -203,7 +203,7 @@ void DB::simpanDataJarak(int pos)
         // data_jarak_kota[pos].push_back(pitagoras(kota[pos].x, kota[pos].y, kota[i].x, kota[i].y));
         // cekHubungan(pos, i);
         // printf("%d neng %d = %d\n", pos, i, cekHubungan(pos, i));
-        if (cekHubungan(pos, i))
+        if (cekHubungan(i, pos))
         {
             // printf("onok\n");
             data_jarak_kota[i][pos] = pitagoras(kota[pos].x, kota[pos].y, kota[i].x, kota[i].y);
@@ -318,20 +318,20 @@ void DB::cariRute(string asal, string tujuan)
     //     printf("\n");
     // }
 
-    printf("\n");
+    // printf("\n");
     // printf("iki seng dst path temp %d, dst %d\n", path_temp[dst], dst);
     // for (size_t i = 0; i < banyak_kota; i++)
     // {
     //     printf("path temp %d, dst %d\n", path_temp[i], i);
     // }
-    printf("jarak: %d \t", jarak_antar_node[dst]);
     if (jarak_antar_node[dst] >= INT_MAX)
     {
-        printf("Kadoan\n");
+        printf("Tidak ada jalan menuju %s\n", kota[dst].nama.c_str());
         return;
     }
     else
     {
+        printf("jarak: %d = ", jarak_antar_node[dst]);
         printPath(path_temp, dst);
     }
     printf("\n");

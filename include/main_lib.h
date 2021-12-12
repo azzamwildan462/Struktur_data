@@ -3,7 +3,13 @@
 
 #include "ui.h"
 #include "db.h"
+#include "executor.h"
 
-UI *interface = UI::getInstance();
+// void tambahKota();
+
+static UI *interface = UI::getInstance();
 // interface = UI::getInstance();
+
+// void eksekusi();
+
 #endif

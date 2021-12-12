@@ -1,18 +1,30 @@
 #ifndef UI_H
 #define UI_H
 
+#include <bits/stdc++.h>
 #include <cstdio>
+#include "unistd.h"
 
+using namespace std;
 class UI
 {
+
 private:
-    void printChoice();
+    string kill_command;
+    string nama_kota;
+    float x, y;
+    // const char *kill;
+
+private:
     void execute(int input);
     UI();
 
 public:
-    int tes_var;
+    unsigned int status_eksekusi;
+
+public:
     ~UI();
+    void printChoice();
     static UI *getInstance(); // Design pattern Singleton
 
 public:

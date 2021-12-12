@@ -19,7 +19,6 @@ private:
         vector<int> hubungan_kota;
         int tanda_akhir_hubungan_kota;
     } Kota;
-    unsigned short int banyak_kota;
     vector<Kota> kota;
     vector<vector<float>> data_jarak_kota;
     // Kota kota[100];
@@ -36,17 +35,18 @@ private:
     vector<int> jarak_antar_node;
     vector<bool> sudah_dilewati;
     vector<int> path_temp;
-    int graph[9][9] = {{0, 4, 0, 0, 0, 0, 0, 8, 0},
-                       {4, 0, 8, 0, 0, 0, 0, 11, 0},
-                       {0, 8, 0, 7, 0, 4, 0, 0, 2},
-                       {0, 0, 7, 0, 9, 14, 0, 0, 0},
-                       {0, 0, 0, 9, 0, 10, 0, 0, 0},
-                       {0, 0, 4, 0, 10, 0, 2, 0, 0},
-                       {0, 0, 0, 14, 0, 2, 0, 1, 6},
-                       {8, 11, 0, 0, 0, 0, 1, 0, 7},
-                       {0, 0, 2, 0, 0, 0, 6, 7, 0}};
+    // int graph[9][9] = {{0, 4, 0, 0, 0, 0, 0, 8, 0},
+    //                    {4, 0, 8, 0, 0, 0, 0, 11, 0},
+    //                    {0, 8, 0, 7, 0, 4, 0, 0, 2},
+    //                    {0, 0, 7, 0, 9, 14, 0, 0, 0},
+    //                    {0, 0, 0, 9, 0, 10, 0, 0, 0},
+    //                    {0, 0, 4, 0, 10, 0, 2, 0, 0},
+    //                    {0, 0, 0, 14, 0, 2, 0, 1, 6},
+    //                    {8, 11, 0, 0, 0, 0, 1, 0, 7},
+    //                    {0, 0, 2, 0, 0, 0, 6, 7, 0}};
 
 public:
+    unsigned short int banyak_kota;
     UI *interface = UI::getInstance();
     DB();
     string cariKotaTerdekatStr(string kota_yang_ingin_dicari);
