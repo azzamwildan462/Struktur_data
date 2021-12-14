@@ -1,1 +1,2 @@
-./obj/EAS
+cd obj
+./EAS

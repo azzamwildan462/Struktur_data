@@ -251,8 +251,11 @@ void DB::initDijkstra()
     //     sudah_dilewati.at(i) = 0;
     //     printf("jarak %f dan lewat %d\n", jarak_antar_node[i], sudah_dilewati[i]);
     // }
+
+    if (!data_hasil_dijkstra.empty())
+        printf("Gagal mengosongkan hasil\n");
 }
-void DB::cariRute(string asal, string tujuan)
+bool DB::cariRute(string asal, string tujuan)
 {
     int src = searchByName(asal);
     int dst = searchByName(tujuan);
@@ -278,7 +281,7 @@ void DB::cariRute(string asal, string tujuan)
         if (src_temp == -1)
         {
             printf("Tidak ditemukan jalan kesana\n");
-            return;
+            return 0;
         }
         src_temp_temp = src_temp;
         sudah_dilewati[src_temp] = 1;
@@ -326,15 +329,31 @@ void DB::cariRute(string asal, string tujuan)
     // }
     if (jarak_antar_node[dst] >= INT_MAX)
     {
-        printf("Tidak ada jalan menuju %s\n", kota[dst].nama.c_str());
-        return;
+        printf("Dari %s tidak ada jalan menuju %s\n", kota[src].nama.c_str(), kota[dst].nama.c_str());
+        return 0;
     }
     else
     {
-        printf("jarak: %d = ", jarak_antar_node[dst]);
+        // printf("jarak: %d = ", jarak_antar_node[dst]);
+        iter_get = 0;
         printPath(path_temp, dst);
     }
-    printf("\n");
+    // data_hasil_dijkstra.
+    for (int i = 0, j = data_hasil_dijkstra.size() - 1; i < j; i++, j--) // mbalek hasil e tekan rekursi
+    {
+        int t;
+        t = data_hasil_dijkstra[j];
+        data_hasil_dijkstra[j] = data_hasil_dijkstra[i];
+        data_hasil_dijkstra[i] = t;
+    }
+    // printf("Data fix: ");
+    // for (size_t i = 0; i < data_hasil_dijkstra.size(); i++)
+    // {
+    //     printf("%d -> ", data_hasil_dijkstra[i]);
+    // }
+
+    // printf("\n");
+    return 1;
 }
 
 int DB::cariJarakTerkecilDijkstra(vector<int> jarak_antar_node, vector<bool> sudah_dilewati, unsigned int src)
@@ -369,19 +388,23 @@ int DB::cariJarakTerkecilDijkstra(vector<int> jarak_antar_node, vector<bool> sud
 
 void DB::printPath(vector<int> path_temp, int dst)
 {
-    static unsigned int iter = 0;
+    // static unsigned int iter = 0;
     // printf("iter = %d\n", iter);
+    // printf("iter_get = %d\n", iter_get);
+    data_hasil_dijkstra.resize(iter_get + 1);
+    data_hasil_dijkstra[iter_get] = dst;
     // printf("path temp %d, dst %d\n", path_temp[dst], dst);
-    if (iter > banyak_kota)
+    if (iter_get > banyak_kota)
     {
         printf("Dianggep tidak ada hubungan\n");
         return;
     }
     if (path_temp[dst] == -1) // berhenti saat sampai ke src
         return;
-    iter++;
+    // iter++;
+    iter_get++;
     printPath(path_temp, path_temp[dst]);
-    printf("%d ", dst);
+    // printf("%d ", dst);
 }
 
 bool DB::cekHubungan(int src_pos, int dst_pos)

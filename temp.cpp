@@ -232,7 +232,7 @@ public:
         // memset(&kota[banyak_kota - 1], 0, sizeof(kota[banyak_kota]));
         // printf("alamat sakmarine %p\n", &kota[banyak_kota - 1]);
         // printf("hasil pop fungsi: %s\n", kota[banyak_kota - 1].nama.c_str());
-        // printf("waetfcthweftvewjqewfqweyj\n");
+        // printf("waetfcthweftvewjqewfiter_getyj\n");
         banyak_kota--;
         // printf("hasil pop: %s", result->nama.c_str());
     }
@@ -1050,3 +1050,5 @@ int main()
 
     return 0;
 }
+
+ffffff30 0

@@ -24,20 +24,23 @@ public:
     void tambahKota();
     void hubungkanKota();
     void cariRute();
-    void graph();
+    void graph(bool dijkstra = 0);
 
     // SFMLLLLLL!!!!
 private:
     void gambarHubungan(int x1, int y1, int x2, int y2);
+    float findDirection(float xpos, float ypos, float xtarget, float ytarget);
     void gambarKota();
+    bool termasukJalur(int src, int dst);
     // Vertex drawLine(int x1, int y1, int x2, int y2);
 
 private:
     sf::RenderWindow window;
     sf::Event event_handler;
-    // sf::Font font;
+    sf::Font font;
     float x_offset = 400;
     float y_offset = 300;
+    vector<int> dijkstra_buffer;
 };
 
 #endif
