@@ -19,7 +19,7 @@ Arch based:
 sudo pacman -S cmake flex bison
 ```
 
-Just run script to setup
+Just run script to setuhp
 
 ```
 ./setup-cmake.sh
