@@ -5,14 +5,38 @@ Jurusan: Teknik Komputer
 
 ## Setup
 
+### Pre-request
+
+Debian based:
+
+```
+sudo apt install -y cmake flex bison
+```
+
+Arch based:
+
+```
+sudo pacman -S cmake flex bison
+```
+
+Just run script to setup
+
 ```
 ./setup-cmake.sh
 ```
 
 ## Run
 
+Compile and run:
+
 ```
 ./run.sh
+```
+
+Just run:
+
+```
+./app
 ```
 
 ## Note
