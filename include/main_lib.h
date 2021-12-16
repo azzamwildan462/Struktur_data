@@ -8,6 +8,9 @@
 // void tambahKota();
 
 static UI *interface = UI::getInstance();
+// void printDBG(const char*__restrict_arr arg){
+//     printf(arg);
+// }
 // interface = UI::getInstance();
 
 // void eksekusi();

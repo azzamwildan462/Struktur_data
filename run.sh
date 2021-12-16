@@ -1,2 +1,4 @@
-cd obj
-./EAS
+# cd obj
+# ./EAS
+make
+./app

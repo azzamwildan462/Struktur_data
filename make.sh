@@ -16,3 +16,5 @@ echo "Finishing.."
 # g++ db.o ui.o main.o -o EAS 
 g++ db.o ui.o executor.o main.o -o EAS -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
 echo "Done 100%"
+
+#THIS IS DEPRECATED!!!

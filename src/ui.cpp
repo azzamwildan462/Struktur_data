@@ -19,10 +19,11 @@ void UI::printChoice() // Mem-print menu yang bisa digunakan
     printf("Menu: \n");
     printf("0. Exit\n");
     printf("1. Tambah Kota\n");
-    printf("2 Hubungkan Kota\n");
-    printf("3 Print graph\n");
-    printf("4 Cari rute terpendek\n");
-    printf("5 Tampilkan daftar kota\n");
+    printf("2. Hubungkan Kota\n");
+    printf("3. Print graph\n");
+    printf("4. Cari rute terpendek\n");
+    printf("5. Tampilkan daftar kota\n");
+    printf("6. Bersihkan layar\n");
 }
 
 void UI::execute(int input)
@@ -42,6 +43,8 @@ void UI::execute(int input)
         status_eksekusi = 4;
     else if (input == 0xffff0035)
         status_eksekusi = 5;
+    else if (input == 0xffff0036)
+        system("clear");
     else
         status_eksekusi = 666;
 
@@ -76,10 +79,11 @@ void UI::execute(int input)
 
 void UI::getInput()
 {
-    static int input = -1;
+    int input = -1; // Reset input dari user
 
     printf("Pilihan: ");
     scanf("%s", &input); // Meminta inputan dari user
+    // scanf("%c ", &input); // Meminta inputan dari user
     // printf("pilihan.e : %x\n", input >> 5);
     // printf("nyobak: %x\n", input);
     execute(input);

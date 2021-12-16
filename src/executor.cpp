@@ -13,6 +13,8 @@ void Executor::eksekusi()
         break;
     case 3:
         graph();
+        // pthread_t graph_thread;
+        // pthread_create(&graph_thread,NULL,graph,(void*)0);
         break;
     case 4:
         cariRute();
@@ -141,17 +143,17 @@ void Executor::cariRute()
 void Executor::graph(bool dijkstra)
 {
     // printf("dijkstra %d\n", dijkstra);
-    window.create(VideoMode(800, 600), "Graph hubungan kota");
+    window.create(VideoMode(x_window, y_window), "Graph hubungan kota");
     sf::CircleShape shape(100.f);
     CircleShape kota[Database->banyak_kota];
     Text nama_kota[Database->banyak_kota];
-    int pembuat_ngiri = 50;
+    int pembuat_ngiri = 27;
     int penghitung_banyak_hubungan = 0;
     int temp_j = 0;
     float sudut_hubung = 0;
     float x_arah, y_arah;
     int j = 0;
-    font.loadFromFile("../assets/arial.ttf");
+    font.loadFromFile("assets/arial.ttf");
     // Font arial;
     // arial.loadFromFile("/home/welldone/proyek/strukdat/backup/Struktur_data/assets/arial.tff");
     // arial.loadFromFile("../assets/Noto_Sans/NotoSans-Bold.ttf");
@@ -186,9 +188,9 @@ void Executor::graph(bool dijkstra)
         nama_kota[i].setString(Database->kota[i].nama);
         nama_kota[i].setPosition(sf::Vector2f((float)x_offset + Database->kota[i].x - pembuat_ngiri, (float)y_offset - Database->kota[i].y + 40));
         nama_kota[i].setCharacterSize(20);
-        nama_kota[i].setFillColor(sf::Color(198, 16, 235, 255));
+        nama_kota[i].setFillColor(sf::Color(18, 169, 235, 255));
 
-        kota[i].setFillColor(sf::Color(3, 227, 252, 0.7));
+        kota[i].setFillColor(sf::Color(32, 178, 252, 24));
         kota[i].setRadius(30);
         kota[i].setOrigin(50, 25);
         kota[i].setOutlineColor(sf::Color(3, 227, 152, 200));
@@ -241,7 +243,7 @@ void Executor::graph(bool dijkstra)
                 // arah[j].setPosition((float)(x_offset + Database->kota[i].x + x_offset + Database->kota[Database->kota[i].hubungan_kota[temp_j]].x) / 2, (float)(y_offset - Database->kota[i].y + y_offset - Database->kota[Database->kota[i].hubungan_kota[temp_j]].y) / 2);
                 arah[j].rotate(sudut_hubung + 90);
                 arah[j].setPosition(x_arah, y_arah);
-                arah[j].setFillColor(sf::Color(198, 16, 235, 1));
+                arah[j].setFillColor(sf::Color(255, 16, 35, 69));
                 arah[j].setOutlineColor(sf::Color(198, 16, 235, 255));
                 arah[j].setOutlineThickness(2);
 
@@ -294,7 +296,8 @@ void Executor::graph(bool dijkstra)
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         {
             window.close();
-            break;
+            return;
+            // break;
         }
         window.clear();
 

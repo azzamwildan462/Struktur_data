@@ -7,6 +7,7 @@
 #include <SFML/System.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Window.hpp>
+#include "pthread.h"
 
 // UI *interface = UI::getInstance();
 
@@ -38,9 +39,11 @@ private:
     sf::RenderWindow window;
     sf::Event event_handler;
     sf::Font font;
+    vector<int> dijkstra_buffer;
     float x_offset = 400;
     float y_offset = 300;
-    vector<int> dijkstra_buffer;
+    int x_window=1024;
+    int y_window=768;
 };
 
 #endif

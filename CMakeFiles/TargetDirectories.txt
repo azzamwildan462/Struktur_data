@@ -1,0 +1,9 @@
+/home/wildan/proyek/Struktur_data/CMakeFiles/app.dir
+/home/wildan/proyek/Struktur_data/CMakeFiles/edit_cache.dir
+/home/wildan/proyek/Struktur_data/CMakeFiles/rebuild_cache.dir
+/home/wildan/proyek/Struktur_data/include/CMakeFiles/db.dir
+/home/wildan/proyek/Struktur_data/include/CMakeFiles/ui.dir
+/home/wildan/proyek/Struktur_data/include/CMakeFiles/executor.dir
+/home/wildan/proyek/Struktur_data/include/CMakeFiles/main_lib.dir
+/home/wildan/proyek/Struktur_data/include/CMakeFiles/edit_cache.dir
+/home/wildan/proyek/Struktur_data/include/CMakeFiles/rebuild_cache.dir
