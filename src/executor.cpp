@@ -125,7 +125,8 @@ void Executor::cariRute()
             // printf("%d -> ", Database->data_hasil_dijkstra[i]);
             printf("%s -> ", Database->kota[Database->data_hasil_dijkstra[i]].nama.c_str());
         }
-        printf("%s\n", Database->kota[Database->data_hasil_dijkstra.size() - 1].nama.c_str());
+        // printf("tekan graph %d\n", Database->data_hasil_dijkstra.size() - 1);
+        printf("%s\n", Database->kota[Database->data_hasil_dijkstra[Database->data_hasil_dijkstra.size() - 1]].nama.c_str());
     }
     else if (input == 0x2)
     {
@@ -214,24 +215,9 @@ void Executor::graph(bool dijkstra)
                 garis_hubung[j].setPosition((float)x_offset + Database->kota[i].x - 18, (float)y_offset - Database->kota[i].y + 5);
                 garis_hubung[j].rotate(sudut_hubung);
                 garis_hubung[j].setFillColor(sf::Color(198, 16, 235, 64));
+                garis_hubung[j].setOutlineColor(sf::Color(198, 16, 235, 255));
                 garis_hubung[j].setOutlineThickness(1);
 
-                if (dijkstra)
-                {
-                    if (termasukJalur(i, Database->kota[i].hubungan_kota[temp_j]))
-                    {
-                        // printf("seng masuk %d %d", i, Database->kota[i].hubungan_kota[temp_j]);
-                        garis_hubung[j].setOutlineColor(sf::Color::Green);
-                    }
-                    else
-                    {
-                        garis_hubung[j].setOutlineColor(sf::Color(198, 16, 235, 255));
-                    }
-                }
-                else
-                {
-                    garis_hubung[j].setOutlineColor(sf::Color(198, 16, 235, 255));
-                }
                 x_arah = x_offset + Database->kota[i].x - 18 + ((float)(x_offset + Database->kota[i].x - 18 + x_offset + Database->kota[Database->kota[i].hubungan_kota[temp_j]].x - 18) / 2);
                 x_arah /= 2;
                 y_arah = y_offset - Database->kota[i].y + 5 + ((float)(y_offset - Database->kota[i].y + 5 + y_offset - Database->kota[Database->kota[i].hubungan_kota[temp_j]].y + 5) / 2);
@@ -246,6 +232,37 @@ void Executor::graph(bool dijkstra)
                 arah[j].setFillColor(sf::Color(255, 16, 35, 69));
                 arah[j].setOutlineColor(sf::Color(198, 16, 235, 255));
                 arah[j].setOutlineThickness(2);
+
+                // printf("dijktrsa %d\n", dijkstra);
+                if (dijkstra)
+                {
+                    // printf("melbu kene pirang kali? %d\n", j);
+                    if (termasukJalur(i, Database->kota[i].hubungan_kota[temp_j]))
+                    {
+                        // printf("seng masuk %d %d", i, Database->kota[i].hubungan_kota[temp_j]);
+                        garis_hubung[j].setOutlineColor(sf::Color::Green);
+                        garis_hubung[j].setOutlineThickness(1);
+                        arah[j].setOutlineColor(sf::Color(12, 255, 46, 255));
+                        // arah[j].setFillColor(sf::Color(12, 255, 128, 100));
+                    }
+                    if (termasukJalur(Database->kota[i].hubungan_kota[temp_j], i))
+                    {
+                        garis_hubung[j].setOutlineColor(sf::Color::Green);
+                        garis_hubung[j].setOutlineThickness(1);
+                    }
+                    // else
+                    // {
+                    //     // garis_hubung[j].setOutlineColor(sf::Color(198, 16, 235, 255));
+                    //     // garis_hubung[j].setOutlineColor(sf::Color(198, 16, 235, 255));
+                    //     // garis_hubung[j].setOutlineThickness(1);
+                    // }
+                }
+                // else
+                // {
+                //     // garis_hubung[j].setOutlineColor(sf::Color(198, 16, 235, 255));
+                //     // garis_hubung[j].setOutlineColor(sf::Color(198, 16, 235, 255));
+                //     // garis_hubung[j].setOutlineThickness(1);
+                // }
 
                 // printf("anune %d %d %d\n", j, i, Database->kota[i].hubungan_kota[temp_j]);
                 // printf("koor e: %f %f %f %f\n", (float)x_offset + Database->kota[i].x, (float)y_offset - Database->kota[i].y, (float)x_offset + Database->kota[Database->kota[i].hubungan_kota[temp_j]].x, (float)y_offset - Database->kota[Database->kota[i].hubungan_kota[temp_j]].y);
@@ -334,6 +351,7 @@ bool Executor::termasukJalur(int src, int dst)
 {
     for (size_t i = 0; i < dijkstra_buffer.size() - 1; i++)
     {
+        // printf("%d dan %d\n", dijkstra_buffer[i], dijkstra_buffer[i + 1]);
         if (dijkstra_buffer[i] == src && dijkstra_buffer[i + 1] == dst)
         {
             return 1;

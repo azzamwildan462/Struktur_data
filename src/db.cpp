@@ -325,11 +325,11 @@ bool DB::cariRute(string asal, string tujuan)
         {
             // printf("%d dan %d ->  %.02f dan %.02f \n", src_temp, dst_temp, jarak_antar_node[src_temp] + data_jarak_kota[src_temp][dst_temp], jarak_antar_node[dst_temp]);
             // printf("%d dan %d, status dst %d, jarak %.02f\n", src_temp, dst_temp, sudah_dilewati[dst_temp], data_jarak_kota[src_temp][dst_temp]);
-            if (sudah_dilewati[dst_temp] == 0 && data_jarak_kota[src_temp][dst_temp] > 0 && jarak_antar_node[src_temp] + data_jarak_kota[src_temp][dst_temp] < jarak_antar_node[dst_temp])
+            if (sudah_dilewati[dst_temp] == 0 && graph[src_temp][dst_temp] > 0 && jarak_antar_node[src_temp] + graph[src_temp][dst_temp] < jarak_antar_node[dst_temp])
             {
                 // printf("seng masok: %d dan %d ->  %d dan %d \n", src_temp, dst_temp, jarak_antar_node[src_temp], jarak_antar_node[dst_temp]);
                 path_temp[dst_temp] = src_temp;
-                jarak_antar_node[dst_temp] = jarak_antar_node[src_temp] + data_jarak_kota[src_temp][dst_temp];
+                jarak_antar_node[dst_temp] = jarak_antar_node[src_temp] + graph[src_temp][dst_temp];
                 // printf("sak marine diproses %d\n", jarak_antar_node[dst_temp]);
             }
             else
@@ -349,10 +349,11 @@ bool DB::cariRute(string asal, string tujuan)
     }
     // printf("\n");
     // printf("iki seng dst path temp %d, dst %d\n", path_temp[dst], dst);
-    // for (size_t i = 0; i < banyak_kota; i++)
-    // {
-    //     printf("path temp %d, dst %d\n", path_temp[i], i);
-    // }
+    for (size_t i = 0; i < banyak_kota; i++)
+    {
+        printf("path temp %d, dst %d\n", path_temp[i], i);
+    }
+
     if (jarak_antar_node[dst] >= INT_MAX) // Jika masih bernilai sesuai inisialisasi maka dianggap tidak sampai tujuan
     {
         printf("Dari %s tidak ada jalan menuju %s\n", kota[src].nama.c_str(), kota[dst].nama.c_str());
@@ -360,7 +361,7 @@ bool DB::cariRute(string asal, string tujuan)
     }
     else
     {
-        // printf("jarak: %d = ", jarak_antar_node[dst]);
+        printf("jarak: %d\n", jarak_antar_node[dst]);
         iter_get = 0;
         printPath(path_temp, dst);
     }
