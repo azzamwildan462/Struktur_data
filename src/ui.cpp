@@ -33,7 +33,7 @@ void UI::execute(int input)
         kill_command = "kill " + to_string(getpid()); // Membuat string dan mendapatkan PID program
         system(kill_command.c_str());                 // Menggunakan command linux untuk kill program berdasarkan PID nya
     }
-    else if (input == 0xffff0031)
+    else if (input == 0xffff0031) // ketika input user adalah 1 maka status_eksekusi = 1
         status_eksekusi = 1;
     else if (input == 0xffff0032)
         status_eksekusi = 2;
@@ -47,34 +47,6 @@ void UI::execute(int input)
         system("clear");
     else
         status_eksekusi = 666;
-
-    // switch (input)
-    // {
-    // case 0:
-    //     kill_command = "kill " + to_string(getpid()); // Membuat string dan mendapatkan PID program
-    //     system(kill_command.c_str());                 // Menggunakan command linux untuk kill program berdasarkan PID nya
-    //     break;
-    // case 1:
-    //     status_eksekusi = 1;
-    //     break;
-    // case 2:
-    //     status_eksekusi = 2;
-    //     break;
-    // case 3:
-    //     status_eksekusi = 3;
-    //     break;
-    // case 4:
-    //     status_eksekusi = 4;
-    //     break;
-    // case 5:
-    //     status_eksekusi = 5;
-    //     break;
-
-    // default:
-    //     // printChoice();
-    //     status_eksekusi = 666;
-    //     break;
-    // }
 }
 
 void UI::getInput()
@@ -83,8 +55,5 @@ void UI::getInput()
 
     printf("Pilihan: ");
     scanf("%s", &input); // Meminta inputan dari user
-    // scanf("%c ", &input); // Meminta inputan dari user
-    // printf("pilihan.e : %x\n", input >> 5);
-    // printf("nyobak: %x\n", input);
     execute(input);
 }

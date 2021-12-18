@@ -34,15 +34,6 @@ private:
     vector<bool> sudah_dilewati;
     vector<int> path_temp;
     unsigned int iter_get;
-    // int graph[8][8] = {
-    //     {0, 4, 3, 0, 0, 0, 0, 0},
-    //     {4, 0, 2, 5, 0, 0, 0, 0},
-    //     {3, 2, 0, 3, 6, 0, 0, 0},
-    //     {0, 5, 3, 0, 1, 5, 0, 0},
-    //     {0, 0, 6, 1, 0, 0, 5, 0},
-    //     {0, 0, 0, 5, 0, 0, 2, 7},
-    //     {0, 0, 0, 0, 5, 2, 0, 4},
-    //     {0, 0, 0, 0, 0, 7, 4, 0}};
 
 public:
     unsigned short int banyak_kota;

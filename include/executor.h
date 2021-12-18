@@ -27,7 +27,7 @@ public:
     void cariRute();
     void graph(bool dijkstra = 0);
 
-    // SFMLLLLLL!!!!
+    // SFMLLLLLL
 private:
     void gambarHubungan(int x1, int y1, int x2, int y2);
     float findDirection(float xpos, float ypos, float xtarget, float ytarget);

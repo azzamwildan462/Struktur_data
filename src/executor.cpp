@@ -1,4 +1,3 @@
-// #include "../include/main_lib.h"
 #include "../include/executor.h"
 
 void Executor::eksekusi()
@@ -13,26 +12,19 @@ void Executor::eksekusi()
         break;
     case 3:
         graph();
-        // pthread_t graph_thread;
-        // pthread_create(&graph_thread,NULL,graph,(void*)0);
         break;
     case 4:
         cariRute();
         break;
     case 5:
-        // printf("satu\n");
         Database->show();
         break;
-        // case 666:
-        //     interface->printChoice();
-        //     break;
 
     default:
         interface->printChoice();
         break;
     }
     interface->status_eksekusi = 0;
-    // cout << "dari eksekusi " << interface->status_eksekusi << endl;
 }
 
 void Executor::tambahKota()
@@ -46,14 +38,9 @@ void Executor::tambahKota()
     scanf("%f", &x);
     printf("Koordinat Y: ");
     scanf("%f", &y);
-    // cout << nama_kota << " " << x << " " << y << endl;
     Database->append(nama_kota, x, y);
 }
 
-// Executor::Executor(Database *Database)
-// {
-//     this->Database = Database;
-// }
 Executor::Executor(DB *Database)
 {
     this->Database = Database;
@@ -75,25 +62,17 @@ void Executor::hubungkanKota()
     printf("kota asal: ");
     getline(cin, kota_asal);
     getline(cin, kota_asal);
-    // src = Database->searchByName(kota_asal);
-    // if (src == -1)
-    //     cout << "Kota " << kota_asal << " tidak ditemukan.." << endl;
 
     printf("kota tujuan: ");
     getline(cin, kota_tujuan);
-    // dst = Database->searchByName(kota_tujuan);
-    // if (dst == -1)
-    //     cout << "Kota " << kota_tujuan << " tidak ditemukan.." << endl;
 
     if (dua_arah == 0x1)
     {
-        // printf("satu\n");
         Database->connect1arah(kota_asal, kota_tujuan);
     }
     else if (dua_arah == 0x2)
     {
         Database->connect2arah(kota_asal, kota_tujuan);
-        // printf("dua\n");
     }
 }
 
@@ -122,22 +101,14 @@ void Executor::cariRute()
         printf("Rutenya yaitu: \n");
         for (size_t i = 0; i < Database->data_hasil_dijkstra.size() - 1; i++)
         {
-            // printf("%d -> ", Database->data_hasil_dijkstra[i]);
             printf("%s -> ", Database->kota[Database->data_hasil_dijkstra[i]].nama.c_str());
         }
-        // printf("tekan graph %d\n", Database->data_hasil_dijkstra.size() - 1);
         printf("%s\n", Database->kota[Database->data_hasil_dijkstra[Database->data_hasil_dijkstra.size() - 1]].nama.c_str());
     }
     else if (input == 0x2)
     {
         dijkstra_buffer.resize(Database->data_hasil_dijkstra.size());
         dijkstra_buffer = Database->data_hasil_dijkstra;
-        // printf("\n");
-        // for (size_t i = 0; i < dijkstra_buffer.size(); i++)
-        // {
-        //     printf("%d -> ", dijkstra_buffer[i]);
-        // }
-        // printf("\n");
         graph(true);
     }
 }
@@ -155,28 +126,13 @@ void Executor::graph(bool dijkstra)
     float x_arah, y_arah;
     int j = 0;
     font.loadFromFile("assets/arial.ttf");
-    // Font arial;
-    // arial.loadFromFile("/home/welldone/proyek/strukdat/backup/Struktur_data/assets/arial.tff");
-    // arial.loadFromFile("../assets/Noto_Sans/NotoSans-Bold.ttf");
-    // arial.loadFromFile("../assets/quicksand/Quicksand-Bold.otf");
-    // arial = Font.new("".to_s);
-    // if (!arial.loadFromFile("../assets/arial.tff"))
-    //     return;
-
-    // font.loadFromStream(sf::InputStream())
-    // font.loadFromMemory()
-
-    // awgyjradwkuawdkawkwda
     for (int i = 0; i < Database->banyak_kota; i++)
     {
         if (Database->kota[i].tanda_akhir_hubungan_kota > -1)
         {
-            // printf("Ada\n");
-            // printf("jumlah? %d\n", Database->kota[i].tanda_akhir_hubungan_kota + 1);
             penghitung_banyak_hubungan += Database->kota[i].tanda_akhir_hubungan_kota + 1;
         }
     }
-    // printf("banyk hubungan %d\n", penghitung_banyak_hubungan);
     RectangleShape garis_hubung[penghitung_banyak_hubungan];
     CircleShape arah[penghitung_banyak_hubungan];
     RectangleShape debug;
@@ -200,7 +156,6 @@ void Executor::graph(bool dijkstra)
 
         if (Database->kota[i].tanda_akhir_hubungan_kota > -1)
         {
-            // printf("mrene peng piro? %d\n", j);
             temp_j = 0;
             while (j < penghitung_banyak_hubungan)
             {
@@ -209,8 +164,8 @@ void Executor::graph(bool dijkstra)
 
                 sudut_hubung = findDirection((float)x_offset + Database->kota[i].x, (float)y_offset - Database->kota[i].y, (float)x_offset + Database->kota[Database->kota[i].hubungan_kota[temp_j]].x, (float)y_offset - Database->kota[Database->kota[i].hubungan_kota[temp_j]].y);
 
+                // untuk hubungan kota
                 garis_hubung[j].setOrigin(0, 2.5);
-                // garis_hubung[j].setSize(Vector2f(150 + fabs(0 - fmod(fabs(sudut_hubung), 90)) - 20, 5));
                 garis_hubung[j].setSize(Vector2f(Database->pitagoras((float)x_offset + Database->kota[i].x, (float)y_offset - Database->kota[i].y, (float)x_offset + Database->kota[Database->kota[i].hubungan_kota[temp_j]].x, (float)y_offset - Database->kota[Database->kota[i].hubungan_kota[temp_j]].y), 5));
                 garis_hubung[j].setPosition((float)x_offset + Database->kota[i].x - 18, (float)y_offset - Database->kota[i].y + 5);
                 garis_hubung[j].rotate(sudut_hubung);
@@ -223,10 +178,10 @@ void Executor::graph(bool dijkstra)
                 y_arah = y_offset - Database->kota[i].y + 5 + ((float)(y_offset - Database->kota[i].y + 5 + y_offset - Database->kota[Database->kota[i].hubungan_kota[temp_j]].y + 5) / 2);
                 y_arah /= 2;
 
+                // untuk arah hubungan
                 arah[j].setOrigin(15, 7.5);
                 arah[j].setPointCount(3);
                 arah[j].setRadius(15);
-                // arah[j].setPosition((float)(x_offset + Database->kota[i].x + x_offset + Database->kota[Database->kota[i].hubungan_kota[temp_j]].x) / 2, (float)(y_offset - Database->kota[i].y + y_offset - Database->kota[Database->kota[i].hubungan_kota[temp_j]].y) / 2);
                 arah[j].rotate(sudut_hubung + 90);
                 arah[j].setPosition(x_arah, y_arah);
                 arah[j].setFillColor(sf::Color(255, 16, 35, 69));
@@ -236,63 +191,31 @@ void Executor::graph(bool dijkstra)
                 // printf("dijktrsa %d\n", dijkstra);
                 if (dijkstra)
                 {
-                    // printf("melbu kene pirang kali? %d\n", j);
                     if (termasukJalur(i, Database->kota[i].hubungan_kota[temp_j]))
                     {
-                        // printf("seng masuk %d %d", i, Database->kota[i].hubungan_kota[temp_j]);
                         garis_hubung[j].setOutlineColor(sf::Color::Green);
                         garis_hubung[j].setOutlineThickness(1);
                         arah[j].setOutlineColor(sf::Color(12, 255, 46, 255));
-                        // arah[j].setFillColor(sf::Color(12, 255, 128, 100));
                     }
                     if (termasukJalur(Database->kota[i].hubungan_kota[temp_j], i))
                     {
                         garis_hubung[j].setOutlineColor(sf::Color::Green);
                         garis_hubung[j].setOutlineThickness(1);
                     }
-                    // else
-                    // {
-                    //     // garis_hubung[j].setOutlineColor(sf::Color(198, 16, 235, 255));
-                    //     // garis_hubung[j].setOutlineColor(sf::Color(198, 16, 235, 255));
-                    //     // garis_hubung[j].setOutlineThickness(1);
-                    // }
                 }
-                // else
-                // {
-                //     // garis_hubung[j].setOutlineColor(sf::Color(198, 16, 235, 255));
-                //     // garis_hubung[j].setOutlineColor(sf::Color(198, 16, 235, 255));
-                //     // garis_hubung[j].setOutlineThickness(1);
-                // }
-
-                // printf("anune %d %d %d\n", j, i, Database->kota[i].hubungan_kota[temp_j]);
-                // printf("koor e: %f %f %f %f\n", (float)x_offset + Database->kota[i].x, (float)y_offset - Database->kota[i].y, (float)x_offset + Database->kota[Database->kota[i].hubungan_kota[temp_j]].x, (float)y_offset - Database->kota[Database->kota[i].hubungan_kota[temp_j]].y);
-                // printf("%d %f %f\n", j, (float)x_offset + Database->kota[i].x, (float)y_offset - Database->kota[i].y);
-                // printf("sudut? %f\n", findDirection((float)x_offset + Database->kota[i].x, (float)y_offset - Database->kota[i].y, (float)x_offset + Database->kota[Database->kota[i].hubungan_kota[temp_j]].x, (float)y_offset - Database->kota[Database->kota[i].hubungan_kota[temp_j]].y));
                 j++;
                 temp_j++;
             }
         }
     }
-    // printf("\n");
-
-    // printf("\n");
-    // printf("cobak: %f \n",garis_hubung[0].getPosition());
-    // cout << "duawkdawukwadkudakw" << garis_hubung[0].getPosition() << endl;
-    // printf("iki tekan tengah\n");
 
     // menimpa dengan hasil dari dijkstra
     if (dijkstra)
     {
         for (size_t i = 0; i < dijkstra_buffer.size(); i++)
         {
-            // printf("%d -> ", dijkstra_buffer[i]);
-            // kota[dijkstra_buffer[i]].setFillColor(sf::Color::Green);
             kota[dijkstra_buffer[i]].setOutlineColor(sf::Color::Green);
             kota[dijkstra_buffer[i]].setOutlineThickness(3);
-            // if (i < dijkstra_buffer.size() - 1)
-            // {
-            //     garis_hubung[i].setFillColor(sf::Color::Green);
-            // }
         }
     }
 
@@ -314,7 +237,6 @@ void Executor::graph(bool dijkstra)
         {
             window.close();
             return;
-            // break;
         }
         window.clear();
 
@@ -323,8 +245,6 @@ void Executor::graph(bool dijkstra)
             window.draw(garis_hubung[i]);
             window.draw(arah[i]);
         }
-        // window.draw(debug);
-        // window.draw(garis_hubung[0]);
         for (int i = 0; i < Database->banyak_kota; i++)
         {
             window.draw(kota[i]);
@@ -351,7 +271,6 @@ bool Executor::termasukJalur(int src, int dst)
 {
     for (size_t i = 0; i < dijkstra_buffer.size() - 1; i++)
     {
-        // printf("%d dan %d\n", dijkstra_buffer[i], dijkstra_buffer[i + 1]);
         if (dijkstra_buffer[i] == src && dijkstra_buffer[i + 1] == dst)
         {
             return 1;
