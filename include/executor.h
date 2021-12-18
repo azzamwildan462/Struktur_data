@@ -42,8 +42,8 @@ private:
     vector<int> dijkstra_buffer;
     float x_offset = 400;
     float y_offset = 300;
-    int x_window=1024;
-    int y_window=768;
+    int x_window = 1024;
+    int y_window = 768;
 };
 
 #endif

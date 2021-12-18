@@ -8,6 +8,21 @@ DB::DB()
 
 void DB::append(string nama_kota, int x, int y)
 {
+    if (searchByName(nama_kota) >= 0)
+    {
+        printf("Error: Nama kota sudah ada yang pakai\n");
+        return;
+    }
+    if (abs(y) + 384 >= 768)
+    {
+        printf("Error: koordinat_y keluar batas window");
+        return;
+    }
+    if (abs(x) + 512 >= 1024)
+    {
+        printf("Error: koordinat_x keluar batas window");
+        return;
+    }
     banyak_kota++;                          // menambahkan banyak kota
     kota.resize(banyak_kota);               // me-resize vector kota
     kota[banyak_kota - 1].nama = nama_kota; // proses inisialisai kota
@@ -183,6 +198,11 @@ void DB::connect1arah(string src, string dst)
         printf("Error: Kota %s tidak ditemukan dalam Database\n", dst.c_str());
         return;
     }
+    if (cekHubungan(src_pos, dst_pos))
+    {
+        printf("Info: Kota %s dengan %s sudah terhubung\n", src.c_str(), dst.c_str());
+        return;
+    }
     // Sampai sini dipastikan aman
     kota[src_pos].tanda_akhir_hubungan_kota++;
     kota[src_pos].hubungan_kota.resize(kota[src_pos].tanda_akhir_hubungan_kota + 1);
@@ -203,15 +223,33 @@ void DB::connect2arah(string src, string dst)
         printf("Error: Kota %s tidak ditemukan dalam Database\n", dst.c_str());
         return;
     }
+    if (cekHubungan(src_pos, dst_pos))
+    {
+        printf("Info: Kota %s dengan %s sudah terhubung\n", src.c_str(), dst.c_str());
+        // return;
+    }
+    else
+    {
+        kota[src_pos].tanda_akhir_hubungan_kota++;
+        kota[src_pos].hubungan_kota.resize(kota[src_pos].tanda_akhir_hubungan_kota + 1);
+        kota[src_pos].hubungan_kota[kota[src_pos].tanda_akhir_hubungan_kota] = dst_pos;
+    }
+    if (cekHubungan(dst_pos, src_pos))
+    {
+        printf("Info: Kota %s dengan %s sudah terhubung\n", src.c_str(), dst.c_str());
+        // return;
+    }
+    else
+    {
+
+        kota[dst_pos].tanda_akhir_hubungan_kota++;
+        kota[dst_pos].hubungan_kota.resize(kota[dst_pos].tanda_akhir_hubungan_kota + 1);
+        kota[dst_pos].hubungan_kota[kota[dst_pos].tanda_akhir_hubungan_kota] = src_pos;
+    }
 
     // Jika sampai sini maka bisa dipastikan aman
-    kota[dst_pos].tanda_akhir_hubungan_kota++;
-    kota[dst_pos].hubungan_kota.resize(kota[dst_pos].tanda_akhir_hubungan_kota + 1);
-    kota[dst_pos].hubungan_kota[kota[dst_pos].tanda_akhir_hubungan_kota] = src_pos;
 
-    kota[src_pos].tanda_akhir_hubungan_kota++;
-    kota[src_pos].hubungan_kota.resize(kota[src_pos].tanda_akhir_hubungan_kota + 1);
-    kota[src_pos].hubungan_kota[kota[src_pos].tanda_akhir_hubungan_kota] = dst_pos;
+    return;
 }
 
 void DB::simpanDataJarak(int pos)
@@ -325,11 +363,11 @@ bool DB::cariRute(string asal, string tujuan)
         {
             // printf("%d dan %d ->  %.02f dan %.02f \n", src_temp, dst_temp, jarak_antar_node[src_temp] + data_jarak_kota[src_temp][dst_temp], jarak_antar_node[dst_temp]);
             // printf("%d dan %d, status dst %d, jarak %.02f\n", src_temp, dst_temp, sudah_dilewati[dst_temp], data_jarak_kota[src_temp][dst_temp]);
-            if (sudah_dilewati[dst_temp] == 0 && graph[src_temp][dst_temp] > 0 && jarak_antar_node[src_temp] + graph[src_temp][dst_temp] < jarak_antar_node[dst_temp])
+            if (sudah_dilewati[dst_temp] == 0 && data_jarak_kota[src_temp][dst_temp] > 0 && jarak_antar_node[src_temp] + data_jarak_kota[src_temp][dst_temp] < jarak_antar_node[dst_temp])
             {
                 // printf("seng masok: %d dan %d ->  %d dan %d \n", src_temp, dst_temp, jarak_antar_node[src_temp], jarak_antar_node[dst_temp]);
                 path_temp[dst_temp] = src_temp;
-                jarak_antar_node[dst_temp] = jarak_antar_node[src_temp] + graph[src_temp][dst_temp];
+                jarak_antar_node[dst_temp] = jarak_antar_node[src_temp] + data_jarak_kota[src_temp][dst_temp];
                 // printf("sak marine diproses %d\n", jarak_antar_node[dst_temp]);
             }
             else
@@ -349,10 +387,10 @@ bool DB::cariRute(string asal, string tujuan)
     }
     // printf("\n");
     // printf("iki seng dst path temp %d, dst %d\n", path_temp[dst], dst);
-    for (size_t i = 0; i < banyak_kota; i++)
-    {
-        printf("path temp %d, dst %d\n", path_temp[i], i);
-    }
+    // for (size_t i = 0; i < banyak_kota; i++)
+    // {
+    //     printf("path temp %d, dst %d\n", path_temp[i], i);
+    // }
 
     if (jarak_antar_node[dst] >= INT_MAX) // Jika masih bernilai sesuai inisialisasi maka dianggap tidak sampai tujuan
     {
@@ -363,7 +401,7 @@ bool DB::cariRute(string asal, string tujuan)
     {
         printf("jarak: %d\n", jarak_antar_node[dst]);
         iter_get = 0;
-        printPath(path_temp, dst);
+        getPath(path_temp, dst);
     }
     // data_hasil_dijkstra.
     for (int i = 0, j = data_hasil_dijkstra.size() - 1; i < j; i++, j--) // membalikkan isi array
@@ -396,7 +434,7 @@ int DB::cariJarakTerkecilDijkstra(vector<int> jarak_antar_node, vector<bool> sud
     for (int v = 0; v < banyak_kota; v++)
     {
         // printf("lawdhgwuvgadwygv %d\n", sudah_dilewati[v]);
-        // printf("src temp temp %d  dan v nya %d   jarak antar node %.02f    lewat %d\n", src, v, jarak_antar_node[v], sudah_dilewati[v]);
+        // printf("src temp temp %d dan v nya %d jarak antar node %.02f lewat %d\n", src, v, jarak_antar_node[v], sudah_dilewati[v]);
         if (sudah_dilewati[v] == 0 && jarak_antar_node[v] <= min) // jika kota tujuan belum diproses
         {
             // printf("seng masok src temp temp %d  dan v nya %.02f   jarak antar node %.02f    lewat %d\n", src, v, jarak_antar_node[v], sudah_dilewati[v]);
@@ -418,7 +456,7 @@ int DB::cariJarakTerkecilDijkstra(vector<int> jarak_antar_node, vector<bool> sud
     return min_index;
 }
 
-void DB::printPath(vector<int> path_temp, int dst)
+void DB::getPath(vector<int> path_temp, int dst)
 {
     // static unsigned int iter = 0;
     // printf("iter = %d\n", iter);
@@ -435,7 +473,7 @@ void DB::printPath(vector<int> path_temp, int dst)
         return;
     // iter++;
     iter_get++;
-    printPath(path_temp, path_temp[dst]); // Rekursi
+    getPath(path_temp, path_temp[dst]); // Rekursi
     // printf("%d ", dst);
 }
 
@@ -457,3 +495,4 @@ bool DB::cekHubungan(int src_pos, int dst_pos)
 
     return 0;
 }
+// adcwdgacwkcwbkdgcwdbkg

@@ -23,14 +23,14 @@ int cariJarakTerkecilDijkstra(int jarak_antar_node[], bool sudah[])
 // Function to print shortest
 // path from source to dst
 // using jalan array
-void printPath(int jalan[], int dst)
+void getPath(int jalan[], int dst)
 {
 
     // Base Case : If dst is source
     if (jalan[dst] == -1) // mandek ketika mencapai asal nya. tadi di dalem void dijkstra kan sudah dibuatnya asalnya itu diberi nilai -1
         return;
 
-    printPath(jalan, jalan[dst]); // rekursi
+    getPath(jalan, jalan[dst]); // rekursi
 
     printf("%d ", dst); // print node yang termasuk jalur terpendek
 }
@@ -56,11 +56,11 @@ void printPath(int jalan[], int dst)
 //     //     // if (i != src)
 //     //     // {
 //     //     printf("\n%d -> %d \t\t %d\t\t%d ", src, i, jarak_antar_node[i], src);
-//     //     printPath(jalan, i);
+//     //     getPath(jalan, i);
 //     //     // }
 //     // }
 //     printf("\n%d -> %d \t\t %d\t\t%d ", src, dst, jarak_antar_node[dst], src);
-//     printPath(jalan, dst);
+//     getPath(jalan, dst);
 //     return 0;
 // }
 
@@ -138,7 +138,7 @@ void dijkstra(int graph[8][8], int src, int dst)
     }
 
     // printSolution(jarak_antar_node, 8, jalan, src, dst); //
-    printPath(jalan, dst); // print hasil jalan terkecilnya
+    getPath(jalan, dst); // print hasil jalan terkecilnya
 }
 
 int main()

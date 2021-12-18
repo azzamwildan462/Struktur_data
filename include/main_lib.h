@@ -7,7 +7,7 @@
 
 // void tambahKota();
 
-static UI *interface = UI::getInstance();
+static UI *interface = UI::getInstance(); // Design pattern Singleton
 // void printDBG(const char*__restrict_arr arg){
 //     printf(arg);
 // }
